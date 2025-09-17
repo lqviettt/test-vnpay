@@ -3,12 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentRequest;
+use App\Http\Requests\VNpayRequest;
+use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class PaymentController extends Controller
 {
+    /**
+     * vnpayIPNCallback khi vnpay gửi callback IPN
+     *
+     * @param  mixed $request
+     * @return JsonResponse
+     */
+    public function vnpayIPNCallback(VNpayRequest $request): JsonResponse
+    {
+        $validatedData = $request->validated();
+        $result = $this->handleIPNCall($validatedData, collect($validatedData)->except('vnp_SecureHash')->toArray());
+
+        return response()->json($result);
+    }
+
     /**
      * Xử lý callback IPN từ VNPAY cho bảng payments
      * @param array $data
@@ -25,9 +41,7 @@ class PaymentController extends Controller
         $vnpSecureHash = $data['vnp_SecureHash'];
 
         // Lấy payment từ DB
-        $payment = \App\Models\Payment::where('code', $paymentCode)->first();
-        $response = [];
-
+        $payment = Payment::where('code', $paymentCode)->first();
         if (!$payment) {
             return [
                 'RspCode' => '01',
@@ -50,7 +64,6 @@ class PaymentController extends Controller
         $hashData = rtrim($hashData, "&");
         $secureHash = hash_hmac('sha512', $hashData, $hashSecret);
         $isSignatureValid = $secureHash === $vnpSecureHash;
-
         if (!$isSignatureValid) {
             return [
                 'RspCode' => '97',
@@ -69,6 +82,7 @@ class PaymentController extends Controller
                 'Message' => 'Invalid amount'
             ];
         }
+        dd($vnpTransactionStatus, $vnpResponseCode);
         if ($vnpTransactionStatus === '00' || $vnpResponseCode === '00') {
             $payment->status = 'success';
             $payment->transaction_no = $transactionNo;
