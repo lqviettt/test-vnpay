@@ -18,12 +18,18 @@ class JwtMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        try {
-            JWTAuth::parseToken()->authenticate();
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $token = $request->session()->get('jwt_token');
+        if ($token) {
+            try {
+                $user = JWTAuth::setToken($token)->authenticate();
+                if ($user) {
+                    \Illuminate\Support\Facades\Auth::login($user);
+                    return $next($request);
+                }
+            } catch (\Exception $e) {
+                // Token không hợp lệ hoặc hết hạn
+            }
         }
-
-        return $next($request);
+        return redirect()->route('login');
     }
 }

@@ -14,6 +14,34 @@ use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function loginWeb(Request $request)
+    {
+        $credentials = $request->only('name', 'password');
+
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return back()->withErrors(['error' => 'Thông tin đăng nhập không đúng!']);
+            }
+        } catch (JWTException $e) {
+            return back()->withErrors(['error' => 'Không thể tạo token đăng nhập!']);
+        }
+
+        $request->session()->put('jwt_token', $token);
+        return redirect('/');
+    }
+
+    public function logoutWeb(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+    }
     /**
      * register
      *

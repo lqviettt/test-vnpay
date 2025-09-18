@@ -29,7 +29,7 @@ class PaymentRequest extends FormRequest
             'code' => 'required|integer|unique:payments,code',
             'order_id' => 'required|integer',
             'transaction_no' => 'nullable|string',
-            'bank_code' => 'required|string',
+            'bank_code' => 'nullable|string',
             'card_type' => 'nullable|string',
             'response_code' => 'nullable|string',
             'pay_date' => 'nullable|date',

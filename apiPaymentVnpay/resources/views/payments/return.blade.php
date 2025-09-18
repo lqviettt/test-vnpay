@@ -15,6 +15,8 @@
         }
 
         .container {
+            max-width: 600px;
+            margin: 0 auto;
             margin-top: 50px;
             background: #fff;
             padding: 20px;
@@ -113,7 +115,7 @@
                     @endif
                 </span>
             </div>
-            <a href="http://localhost:5173/payment" class="btn-back">Quay lại trang thanh toán</a>
+            <a href="http://localhost:8000/" class="btn-back">Quay lại trang chủ</a>
         </div>
         <footer class="footer">
             <p>&copy; VNPAY {{ date('Y') }}</p>

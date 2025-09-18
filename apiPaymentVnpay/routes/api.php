@@ -16,6 +16,6 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/vnpay/create-payment', [PaymentController::class, 'createPayment']);
-    Route::get('/vnpay/payment-return', [PaymentController::class, 'paymentReturn']);
+    // Route::get('/vnpay/payment-return', [PaymentController::class, 'paymentReturn']);
     Route::get('/vnpay/payment-history', [PaymentController::class, 'paymentHistory']);
 });
