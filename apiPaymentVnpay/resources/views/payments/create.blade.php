@@ -37,6 +37,11 @@
                 <input type="text" name="order_id" id="order_id" class="form-control" maxlength="50"
                     value="{{ old('order_id') }}">
             </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Nội dung</label>
+                <input type="text" name="message" id="message" class="form-control" maxlength="255"
+                    value="{{ old('message') }}">
+            </div>
             <button type="submit" class="btn btn-primary">Tạo giao dịch</button>
         </form>
     </div>
