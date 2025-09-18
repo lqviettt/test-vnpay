@@ -27,7 +27,7 @@ class JwtMiddleware
                     return $next($request);
                 }
             } catch (\Exception $e) {
-                // Token không hợp lệ hoặc hết hạn
+                return redirect()->route('login');
             }
         }
         return redirect()->route('login');

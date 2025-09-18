@@ -1,10 +1,11 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -18,6 +19,9 @@ Route::middleware('jwt')->group(function () {
     Route::get('/payments/create', [PaymentController::class, 'showCreateForm']);
     Route::post('/payments/create', [PaymentController::class, 'createPaymentWeb']);
     Route::get('/payments/history', [PaymentController::class, 'paymentHistoryWeb']);
+    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+    Route::post('/courses/{id}/pay', [CourseController::class, 'pay'])->name('courses.pay');
     Route::get('/payments/retry/{code}', [PaymentController::class, 'retryPaymentWeb']);
 });
 

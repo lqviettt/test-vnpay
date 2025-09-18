@@ -10,7 +10,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/vnpay/ipn-callback', [PaymentController::class, 'vnpayIPNCallback']);
 
 Route::group([
-    'middleware' => 'jwt',
+    'middleware' => 'auth:api',
     'prefix' => 'auth'
 ], function () {
     Route::post('/logout', [AuthController::class, 'logout']);

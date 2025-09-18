@@ -13,6 +13,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'jwt' => \App\Http\Middleware\JwtMiddleware::class,
-        // ...other middleware...
+        'auth' => \App\Http\Middleware\JwtAuthen::class,
     ];
 }
